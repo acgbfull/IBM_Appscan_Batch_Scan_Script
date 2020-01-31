@@ -1,3 +1,3 @@
 http://www.qucejun.com/app/laji/
-http://cip.fju.edu.tw/cip/Login.aspx?id=stu&user=%E7%BA%A2
+http://cip.fju.edu.tw/cip/Login.aspx?id=stu&user=%u674e
 
