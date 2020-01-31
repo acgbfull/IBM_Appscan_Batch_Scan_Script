@@ -1,28 +1,38 @@
-ï»¿@echo off
+@echo off
 setlocal enabledelayedexpansion
+title IBM AppScan batch scan script By T00ls.Net
+echo --------------------------------------------------------------------------------
+echo                     IBM AppScan batch scan script
+echo                                                  ---By acgbfull
+echo                                                  ---By T00ls.Net
+echo --------------------------------------------------------------------------------
+rem ĞèÒªÉ¨ÃèµÄÄ¿±êÁĞ±íÂ·¾¶
+set targets=.\targets.txt
+rem AppScanCMD.exeÂ·¾¶
+set appscancmd=F:\program\appscan_standard_9.0.3.11\AppScanCMD.exe
+rem É¨ÃèÄ£°åÂ·¾¶ 
+set templet_path=.\template\9.0.3.11_templet.scant
+rem É¨Ãè½á¹û±£´æÄ¿Â¼
+set save_dir=.\results\
 
-rem éœ€è¦pingçš„ç›®æ ‡åˆ—è¡¨è·¯å¾„
-set file_list_ping=./domain.txt
-rem éœ€è¦æ‰«æçš„ç›®æ ‡åˆ—è¡¨è·¯å¾„
-set file_list=./site.txt
-rem AppScanCMD.exeè·¯å¾„
-set appscancmd=C:/Program Files (x86)/IBM/AppScan Standard/AppScanCMD.exe
-rem æ‰«ææ¨¡æ¿è·¯å¾„
-set templet_path=./templet.scant
-rem æ‰«æç»“æœä¿å­˜ç›®å½•
-set save_dir=./
-rem æ‰«æç»“æœæ–‡ä»¶å
-set /a n=415
 
-rem å¾ªç¯ping domain
-for /f  %%p in (%file_list_ping%) do (
-ping -n 6 %%p
+rem ÌáĞÑÓÃ»§±£´æºÃÒÑ´æÔÚµÄÉ¨Ãè½á¹û
+for /f  %%j in ('dir /b %save_dir%') do (
+if exist %save_dir%%%j (
+echo É¨Ãè½á¹û±£´æÄ¿Â¼£º%save_dir%´æÔÚÎÄ¼ş£¬ÇëÇå¿ÕºóÔÙÔËĞĞ±¾½Å±¾
+pause
+exit
+)
 )
 
-rem å¾ªç¯æŠ“å–æ‰«æurl
-for /f  %%i in (%file_list%) do (
-"%appscancmd%" /e /su %%i /st %templet_path% /d %save_dir%!n!.scan /v
-set /a n+=1
-)
 
+rem pingĞèÉ¨ÃèÓòÃû£¬·ÀÖ¹appscan±¨ÎŞ·¨Á¬½ÓÖÁÍøÕ¾
+rem È»ºóĞÂ½¨appscanÉ¨ÃèÈÎÎñ²¢×Ô¶¯µ¼³öpdf±¨¸æ
+for /f "tokens=1,2,* delims=/" %%k in (%targets%) do (
+set url=%%k//%%l/%%m
+ping -n 6 %%l
+"%appscancmd%" /e /su !url! /st %templet_path% /d %save_dir%%%l.scan /rf %save_dir%%%l°²È«±¨¸æ.pdf /rt pdf /v
+echo --------------------------------------------------------------------------------
+)
+del RCL_API_Log_Sample*
 pause
